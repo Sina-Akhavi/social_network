@@ -13,4 +13,4 @@ In this website, users can:
 
 5- users can reply on comments.
 
-**notice**: this program is still improving by me. 
+**notice**: I am still improving this program. 
