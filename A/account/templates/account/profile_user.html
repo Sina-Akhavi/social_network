@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} profile {% endblock %}
+{% block body %}
+    <div class="jumbotron jumbotron-fluid" xmlns="http://www.w3.org/1999/html">
+            <div class="container">
+                <center><h1 class="display-4">{{user.username}}</h1></center>
+                 <hr class="my-7">
+            </div>
+    </div>
+
+    <body>
+        {% for post in posts %}
+            <a href="{{post.get_absolute_url}}">{{post.body|truncatewords:5}}</a>
+        <br><br>
+        {% endfor %}
+
+        {% if request.user.id == user.id %}
+            <a href="{% url 'account:create' %}" class="btn btn-primary">Create</a>
+        {% endif %}
+
+        {% if request.user.id != user.id and not is_following %}
+            <a class="btn btn-outline-success" href="{% url 'account:follow' user.id %}"> follow </a>
+        {% endif %}
+
+        {% if request.user.id != user.id and is_following %}
+            <a href="{% url 'account:unfollow' user.id %}" class="btn btn-outline-secondary"> unfollow </a>
+        {% endif %}
+    </body>
+{% endblock %}

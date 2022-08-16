@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} detail {% endblock %}
+
+{% block body %}
+    <b>user: {{post.user}}, {{post.updated|date:"m/d/Y"}}</b>
+    <br>
+    {{post.body}}<hr/>
+    <br>
+
+    {% if request.user.id == post.user.id %}
+        <a href="{% url 'account:delete' post.id %}" class="btn btn-danger">Delete</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="{% url 'account:update' post.id %}" class="btn btn-info">Update</a>
+    {% endif %}
+
+    <form action="" novalidate method="post">
+        {% csrf_token %}
+        {{comment_create_form.as_p}}
+        <input type="submit" value="send">
+    </form>
+
+    {% for comment in pcomments %}
+        <br>
+        <div class="card bg-dark text-white">
+            <p class="card-header"> {{comment.user}} | {{comment.created | timesince}} ago</p>
+            <p class="card-body"> {{comment.body}}</p><br>
+            <form method="post" action="" novalidate class="p-3">
+                {% csrf_token %}
+                {{comment_reply_form.as_p}}
+                <input type="submit" value="send">
+            </form>
+
+
+            {% with comment_replies=comment.rcomments.all %}
+            {% for reply in comment_replies %}
+                <p class="bg-info p-3 m-2">{{reply.user}} | {{reply.created|timesince}}<br/>{{reply.body}}</p>
+
+            {% endfor %}
+            {% endwith %}
+        </div><br/>
+    {% empty %}
+        <p>no comments</p>
+    {% endfor %}
+
+
+{% endblock %}

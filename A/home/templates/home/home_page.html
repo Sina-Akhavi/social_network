@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{%  block title %} home {% endblock %}
+
+
+{% block body %}
+        <br>
+    {% for post in posts %}
+        <a href="{% url 'account:detail' post.id %}"> {{post.body|truncatewords:5}}
+        <br><br><br>
+    {% endfor %}
+
+{% endblock %}
